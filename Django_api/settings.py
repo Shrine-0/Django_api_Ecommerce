@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 import os
 from pathlib import Path
-import dotenv         #for adding user credentials to the environment
+
+import dotenv         
+#for adding user credentials to the environment
 
 dotenv.read_dotenv()  #reading the .env file
 
@@ -44,8 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework', # Django REST framework
-    'courses', # Our courses app
-    'transaction', # Our transaction app
+    'courses.apps.CoursesConfig', # Our courses app
+    'transaction.apps.TransactionConfig', # Our transaction app
 ]
 
 MIDDLEWARE = [
