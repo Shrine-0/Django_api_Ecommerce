@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework', # Django REST framework
     'courses.apps.CoursesConfig', # Our courses app
     'transaction.apps.TransactionConfig', # Our transaction app
+    'django_filters', # Django filters
 ]
 
 MIDDLEWARE = [
