@@ -48,13 +48,13 @@ def get_course(request,pk): #pk is the primary key of the course
     
     return Response({"Courses":serializers.data})#data is the data that is to be sent to the frontend
 
+
 @api_view(['POST'])
 def connectioncheker(request):
-    
-    connection = check_azure_connection(AZURE_CONNECTION_STRING)
-    print(connection)
-    
-    return Response({"connection":connection})
+    # connection = check_azure_connection(AZURE_CONNECTION_STRING)
+    # print(connection)
+    return Response({"Container":check_azure_connection(AZURE_CONNECTION_STRING)})
+
 
 @api_view(['POST'])
 def upload_courses_images(request):
