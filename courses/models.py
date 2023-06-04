@@ -10,7 +10,7 @@ class Category (models.TextChoices):
     Graphics = "Graphics/Vfx",
     
 
-    
+#maintained locally by postgresql 
 class Course(models.Model):#base class models.Model is inherited as it provides all the functionality to interact with the database
     name = models.CharField(max_length=255,default="",blank= False)#CharField is used to store strings
     category =  models.CharField(max_length =200,choices = Category.choices,default = Category.AI) 
@@ -23,3 +23,13 @@ class Course(models.Model):#base class models.Model is inherited as it provides 
 
     def __str__ (self):
         return self.name
+    
+
+
+
+
+#maintained by azure blob storage or cloud
+class CoursesImages(models.Model):
+    
+    course = models.ForeignKey(Course,on_delete=models.CASCADE,null =True,related_name='images')
+    image = models.ImageField(upload_to = "static") 

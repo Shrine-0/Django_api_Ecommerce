@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 import os
 from pathlib import Path
 
-import dotenv         
+import dotenv       
 #for adding user credentials to the environment
 
 dotenv.read_dotenv()  #reading the .env file
@@ -35,6 +35,9 @@ DEBUG = os.environ.get("DEBUG")=='True' #getting the debug value from the enviro
 
 ALLOWED_HOSTS = [
     'localhost',
+    '192.168.1.67',
+    '192.168.1.254',    
+    
 ]
 
 
@@ -51,8 +54,9 @@ INSTALLED_APPS = [
     'courses.apps.CoursesConfig', # Our courses app
     'transaction.apps.TransactionConfig', # Our transaction app
     'django_filters', # Django filters
+    'storages',#cloud storages
 ]
-
+ 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -84,6 +88,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'Django_api.wsgi.application'
 
 
+
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -98,6 +103,14 @@ DATABASES = {
     }
 }
 
+
+
+
+
+
+REST_FRAMEWORK = {
+    'EXCEPTION_HANDLER' : 'utils.custom_exception_handler.custom_exception_handler',
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -133,9 +146,29 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+
+AZURE_CONNECTION_STRING = os.getenv("AZURE_CONNECTION_STRING")#getting the azure connection string from the environment
+AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")#getting the azure account name from the environment
+AZURE_ACCOUNT_KEY = os.getenv("AZURE_ACCOUNT_KEY")#getting the azure account key from the environment
+
+DEFAULT_FILE_STORAGE = "Django_api.custom_storage.custom_azure.AzureMediaStorage"#setting the default file storage to azure media storage
+STATICFILES_STORAGE = "Django_api.custom_storage.custom_azure.AzureStaticStorage"#setting the static file storage to azure static storage
+
+# STORAGES = {
+#     "default": {"BACKEND": "Django_api.custom_storage.custom_azure.AzureMediaStorage"},
+#     "staticfiles": {"BACKEND": "Django_api.custom_storage.custom_azure.AzureStaticStorage"},
+# }
+
+
+AZURE_CUSTOM_DOMAIN = f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net"#setting the azure custom domain for the static and media files
+STATIC_URL = f"https://{AZURE_CUSTOM_DOMAIN}/static/"#setting the static url for the static files
+MEDIA_URL = f"https://{AZURE_CUSTOM_DOMAIN}/media/"#setting the media url for the media files
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")#setting the media root for the media files
