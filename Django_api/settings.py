@@ -97,7 +97,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.getenv("DATABASE_NAME"),
         'USER': os.getenv("DATABASE_USER"),
-        'PASSWORD' : os.getenv("DATABASE_PASSWORD"),
+        'PASSWORD': os.getenv("DATABASE_PASSWORD"),
         'HOST': os.getenv("DATABASE_HOST"),
         'PORT': os.getenv("DATABASE_PORT"),
     }
@@ -152,23 +152,20 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
-
+# DEFAULT_FILE_STORAGE = 'Django_api.custom_storage.custom_azure.AzureMediaStorage'#setting the default file storage to azure media storage
+# STATICFILES_STORAGE = 'Django_api.custom_storage.custom_azure.AzureStaticStorage'#setting the static file storage to azure static storage
+# # STORAGES = {
+# #     "default": {"BACKEND": "Django_api.custom_storage.custom_azure.AzureMediaStorage"},
+# #     "staticfiles": {"BACKEND": "Django_api.custom_storage.custom_azure.AzureStaticStorage"},
+# # }
 
 AZURE_CONNECTION_STRING = os.getenv("AZURE_CONNECTION_STRING")#getting the azure connection string from the environment
 AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")#getting the azure account name from the environment
 AZURE_ACCOUNT_KEY = os.getenv("AZURE_ACCOUNT_KEY")#getting the azure account key from the environment
+ACCOUNT_URL = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
 
-DEFAULT_FILE_STORAGE = "Django_api.custom_storage.custom_azure.AzureMediaStorage"#setting the default file storage to azure media storage
-STATICFILES_STORAGE = "Django_api.custom_storage.custom_azure.AzureStaticStorage"#setting the static file storage to azure static storage
-
-# STORAGES = {
-#     "default": {"BACKEND": "Django_api.custom_storage.custom_azure.AzureMediaStorage"},
-#     "staticfiles": {"BACKEND": "Django_api.custom_storage.custom_azure.AzureStaticStorage"},
-# }
-
-
-AZURE_CUSTOM_DOMAIN = f"https://{AZURE_ACCOUNT_NAME}.blob.core.windows.net"#setting the azure custom domain for the static and media files
-STATIC_URL = f"https://{AZURE_CUSTOM_DOMAIN}/static/"#setting the static url for the static files
-MEDIA_URL = f"https://{AZURE_CUSTOM_DOMAIN}/media/"#setting the media url for the media files
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")#setting the media root for the media files
+# MEDIA_LOCATION = "media"#
+# AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'#setting the azure custom domain for the static and media files
+# STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/static/'#setting the static url for the static files
+# MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'#setting the media url for the media files
+# # MEDIA_ROOT = os.path.join(BASE_DIR, "media")#setting the media root for the media files

@@ -1,14 +1,17 @@
 from django.db import models
 # from django.utils.text import TextChoices
 from django.contrib.auth.models import User
+from Django_api.custom_storage.custom_azure import AzureBlobStorage_SAS
+from Django_api.settings import ACCOUNT_URL,AZURE_ACCOUNT_NAME,AZURE_ACCOUNT_KEY
 
 
+AMS  =  AzureBlobStorage_SAS()
 
 class Category (models.TextChoices):
     AI ="AI(Artificial Intelligence)",
     ML ="ML(Machine Learning)",
     Graphics = "Graphics/Vfx",
-    
+     
 
 #maintained locally by postgresql 
 class Course(models.Model):#base class models.Model is inherited as it provides all the functionality to interact with the database
@@ -32,4 +35,4 @@ class Course(models.Model):#base class models.Model is inherited as it provides 
 class CoursesImages(models.Model):
     
     course = models.ForeignKey(Course,on_delete=models.CASCADE,null =True,related_name='images')
-    image = models.ImageField(upload_to = "static") 
+    image = models.ImageField(default = 'default.jpg',storage= AMS,upload_to = "media") 

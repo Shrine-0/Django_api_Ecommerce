@@ -1,4 +1,4 @@
-from django.urls import path,include
+from django.urls import path,include 
 from . import views
 
 urlpatterns = [
@@ -7,3 +7,4 @@ urlpatterns = [
  path('courses/connection_checker/',views.connectioncheker,name="connection_checker"),
  path('courses/<str:pk>',views.get_course,name="get_course details"),
 ]
+ 
