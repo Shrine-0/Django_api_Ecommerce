@@ -6,6 +6,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/',include('courses.urls')),
     path('transac/',include('transaction.urls')),
+    # path("",include(""))
 ]
 
 handler404

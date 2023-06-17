@@ -6,11 +6,13 @@ from Django_api.custom_storage.azure_utils import check_azure_connection
 from Django_api.custom_storage.custom_azure import AzureMediaStorage as AMS
 from django.conf import settings
 from Django_api.settings import AZURE_CONNECTION_STRING
+from courses.forms import MyModelForm
 
 from .filters import Courses_Filter 
 
 from .serializers import CourseSerializer
-from .models import Course
+from .models import Course, CoursesImages
+from django.core.files.storage import default_storage
 
 @api_view(['GET'])
 def get_courses(request):
@@ -63,12 +65,26 @@ def upload_courses_images(request):
     data = request.data
     
     files = request.FILES.getlist('images')
+    # default_storage.save(data.name,data)
+
     if files is  None:
-       return Response(Exception("No files found"))
+       return Response({"Error":"No files found"})
 
     print("data", data )
     print('files',files)
     
     return Response({"message":"Image was uploaded successfully"})
+
+@api_view(["POST"])
+def upload_check(request):
+    if request.method == 'POST':
+        form  = MyModelForm(request.GET,request.FILES)
+        if form.is_valid():
+            pass
+            return Response({"message": "Valid"})
+        else:
+            return render(request,'upload.html',{"form":form})
+
+
 
 

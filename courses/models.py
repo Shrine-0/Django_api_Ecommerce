@@ -2,10 +2,11 @@ from django.db import models
 # from django.utils.text import TextChoices
 from django.contrib.auth.models import User
 from Django_api.custom_storage.custom_azure import AzureBlobStorage_SAS
-from Django_api.settings import ACCOUNT_URL,AZURE_ACCOUNT_NAME,AZURE_ACCOUNT_KEY
+from Django_api.settings import ACCOUNT_URL,AZURE_ACCOUNT_NAME,ACCOUNT_SAS
 
 
-AMS  =  AzureBlobStorage_SAS()
+
+AMS  =  AzureBlobStorage_SAS( ACCOUNT_URL,ACCOUNT_SAS,"media")
 
 class Category (models.TextChoices):
     AI ="AI(Artificial Intelligence)",

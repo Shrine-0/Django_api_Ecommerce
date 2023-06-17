@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from datetime import timedelta
 import os
 from pathlib import Path
 
@@ -53,8 +54,11 @@ INSTALLED_APPS = [
     'rest_framework', # Django REST framework
     'courses.apps.CoursesConfig', # Our courses app
     'transaction.apps.TransactionConfig', # Our transaction app
+    'Main.apps.MainConfig',#Our main app for index pages and templates
+    'accounts.apps.AccountsConfig',#User accounts registered 
     'django_filters', # Django filters
     'storages',#cloud storages
+    'rest_framework_simplejwt',#Authenticator
 ]
  
 MIDDLEWARE = [
@@ -110,9 +114,22 @@ DATABASES = {
 
 REST_FRAMEWORK = {
     'EXCEPTION_HANDLER' : 'utils.custom_exception_handler.custom_exception_handler',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
 }
 
-# Password validation
+#! - --  -- - - - -- - - - - - - - -  AUTHENTICATION ------       -- -- - - -- - -- - -- - - - ! 
+SIMPLE_JWT  = {
+    "ACCESS_TOKEN_LIFETIME" : timedelta(hours=12),
+    "REFRESH_TOKEN_LIFETIME" : timedelta(hours=12),
+    "BLACKLIST_TOKEN" : True,
+    "AUTH_HEADER_TYPES" : ("Bearer",),
+    "AUTH_TOKEN_CLASSES" : ("rest_framework_simplejwt.tokens.AccessToken")
+
+}
+
+# ! - - -- - - -- - -- - -- - -- - - Password validation  - - -- - -- - -- - --  - -- - - -- - - -!
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -152,8 +169,8 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# DEFAULT_FILE_STORAGE = 'Django_api.custom_storage.custom_azure.AzureMediaStorage'#setting the default file storage to azure media storage
-# STATICFILES_STORAGE = 'Django_api.custom_storage.custom_azure.AzureStaticStorage'#setting the static file storage to azure static storage
+DEFAULT_FILE_STORAGE = 'Django_api.custom_storage.custom_azure.AzureMediaStorage'#setting the default file storage to azure media storage
+STATICFILES_STORAGE = 'Django_api.custom_storage.custom_azure.AzureStaticStorage'#setting the static file storage to azure static storage
 # # STORAGES = {
 # #     "default": {"BACKEND": "Django_api.custom_storage.custom_azure.AzureMediaStorage"},
 # #     "staticfiles": {"BACKEND": "Django_api.custom_storage.custom_azure.AzureStaticStorage"},
@@ -163,9 +180,11 @@ AZURE_CONNECTION_STRING = os.getenv("AZURE_CONNECTION_STRING")#getting the azure
 AZURE_ACCOUNT_NAME = os.getenv("AZURE_ACCOUNT_NAME")#getting the azure account name from the environment
 AZURE_ACCOUNT_KEY = os.getenv("AZURE_ACCOUNT_KEY")#getting the azure account key from the environment
 ACCOUNT_URL = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
+ACCOUNT_SAS = os.getenv("AZURE_SAS_TOKEN")
 
-# MEDIA_LOCATION = "media"#
-# AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'#setting the azure custom domain for the static and media files
-# STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/static/'#setting the static url for the static files
-# MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'#setting the media url for the media files
+MEDIA_LOCATION = "media"#
+AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'#setting the azure custom domain for the static and media files
+STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/static/'#setting the static url for the static files
+MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'#setting the media url for the media files
 # # MEDIA_ROOT = os.path.join(BASE_DIR, "media")#setting the media root for the media files
+# STATIC_URL ='/static/'
